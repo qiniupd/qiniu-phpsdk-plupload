@@ -33,22 +33,6 @@
         };
     };
 
-    // Local.IE = (function() {
-    //     var v = 4,
-    //         div = document.createElement('div'),
-    //         all = div.getElementsByTagName('i');
-    //     while (
-    //         div.innerHTML = '<!--[if gt IE ' + v + ']><i></i><![endif]-->',
-    //         all[0]
-    //     ) {
-    //         v++;
-    //     }
-    //     return v > 4 ? v : false;
-    // }());
-
-    // Local.uploaderRuntime = Local.IE && Local.IE < 10 ? 'flash' : 'html5,flash';
-    // console.log(Local.uploaderRuntime);
-
     var uploader = new plupload.Uploader({
         runtimes: 'html5,flash',
         browse_button: 'pickfiles',

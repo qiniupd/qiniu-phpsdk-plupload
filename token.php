@@ -2,7 +2,7 @@
 header("Content-type: application/json");
 require_once("qiniu/rs.php");
 
-$bucket = 'nodejs-sdk-plupload';
+$bucket = 'qiniu-plupload';
 $accessKey = '0MLvWPnyya1WtPnXFy9KLyGHyFPNdZceomLVk0c9';
 $secretKey = 'o5itRgrXxoD6XQ5wDWKQ7h--eWvWyQVKcsIURuEV';
 
