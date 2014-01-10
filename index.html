@@ -4,10 +4,11 @@
 	<meta charset="UTF-8">
 	<title>七牛Plupload上传Demo </title>
 	<link rel="stylesheet" href="css/main.css">
+	<link rel="stylesheet" href="bootstrap/css/bootstrap.css">
 </head>
 <body>
 <div class="box">
-	<h1>七牛Plupload上传Demo-配合PHP SDK</h1>
+	<h1>Qiniu & Plupload  Demo with PHP SDK</h1>
 	<form>
 	<div class="file-upload" id="container">
 		<div class="file-upload-area">
@@ -16,12 +17,42 @@
 		</div>
 		<div class="file-upload-btn">
 			<span class="select-file">
-				<a class="btn left bg-btn" id="pickfiles" href="#">选择文件上传</a>
+				<a class="btn left bg-btn" id="pickfiles" href="#">
+					点击 选择文件
+					<p>根据浏览器的支持，plupload支持单个/多个文件以及文件夹的选择</p>
+				</a>
 			</span>
 		</div>
 	</div>
 	</form>	
+	<table class="table table-striped" >
+		<thead>
+		  <tr>
+		    <th>文件名</th>
+		    <th>Size</th>
+		    <th>Detail</th>
+		  </tr>
+		</thead>
+		<tbody id="fsUploadProgress">
+<!-- 		  <tr>
+		    <td>Mark</td>
+		    <td>Otto</td>
+		    <td>@mdo</td>
+		  </tr>
+		  <tr>
+		    <td>Jacob</td>
+		    <td>Thornton</td>
+		    <td>@fat</td>
+		  </tr>
+		  <tr>
+		    <td>Larry</td>
+		    <td>the Bird</td>
+		    <td>@twitter</td>
+		  </tr> -->
+		</tbody>
+	</table>
 </div>
+
 <script type="text/javascript" src="js/jquery-1.9.1.min.js"></script>
 <script type="text/javascript" src="js/plupload/plupload.full.min.js"></script>
 <script type="text/javascript" src="js/plupload/i18n/zh_CN.js"></script>

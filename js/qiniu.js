@@ -54,7 +54,7 @@
             url: '/token.php',
             type: 'GET',
             success: function(data) {
-		console.log(data);
+                console.log(data);
                 if (data && data.uptoken) {
                     console.log(data.uptoken);
                     up.settings.multipart_params.token = data.uptoken;
@@ -171,8 +171,3 @@
         uploader.destroy();
         model.manualCancel(true);
     };
-
-
-    $('#pickfiles').on('click', function() {
-
-    });

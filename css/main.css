@@ -1,3 +1,6 @@
+h1 {
+  text-align: center;
+}
 .box {
   margin: 0 auto;
   width: 960px;
@@ -130,6 +133,10 @@
   height: 33px;
   line-height: 33px;
   text-decoration: none;
+
+}
+p {
+  font-size: 12px;
 }
 .file-upload-btn .btn {
   display: inline-block;
