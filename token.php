@@ -1,7 +1,4 @@
 <?php
-	phpinfo();
-	die();
-
 	header("Content-type: application/json");
 	require_once("qiniu/rs.php");
 
