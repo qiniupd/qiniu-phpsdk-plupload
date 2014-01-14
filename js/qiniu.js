@@ -37,11 +37,12 @@
         runtimes: 'html5,flash',
         browse_button: 'pickfiles',
         container: 'container',
-        max_file_size: '40mb',
+        max_file_size: '100mb',
         chunk_size: '5mb',
         url: 'http://up.qiniu.com',
         flash_swf_url: 'js/plupload/Moxie.swf',
         silverlight_xap_url: 'js/plupload/Moxie.xap',
+        max_retries: 3,
         multipart_params: {
             "token": ''
         }
@@ -54,7 +55,6 @@
             url: '/token.php',
             type: 'GET',
             success: function(data) {
-                console.log(data);
                 if (data && data.uptoken) {
                     up.settings.multipart_params.token = data.uptoken;
                 }
@@ -85,12 +85,19 @@
     uploader.bind('UploadProgress', function(up, file) {
         var progress = new FileProgress(file, 'fsUploadProgress');
         progress.setProgress(file.percent + "%", up.total.bytesPerSec);
-        progress.setStatus("上传中...", true);
+        //progress.setStatus("上传中...");
+    });
+
+    uploader.bind('ChunkUploaded', function(up, file, info) {
+        // do some chunk related stuff
+        console.log(up, file, info);
     });
 
     uploader.bind('Error', function(up, err) {
         var file = err.file;
         var errTip = '';
+        $('#container').show();
+        console.log(file);
         if (file) {
             var progress = new FileProgress(file, 'fsUploadProgress');
             progress.setError();
@@ -99,7 +106,7 @@
                     errTip = '上传失败';
                     break;
                 case plupload.FILE_SIZE_ERROR:
-                    errTip = '超过500M的文件请使用命令行或其他工具上传';
+                    errTip = '超过100M的文件请使用命令行或其他工具上传';
                     break;
                 case plupload.FILE_EXTENSION_ERROR:
                     errTip = '非法的文件类型';
@@ -157,9 +164,9 @@
 
     uploader.bind('FileUploaded', function(up, file, info) {
         var progress = new FileProgress(file, 'fsUploadProgress');
-        progress.setStatus("上传完成");
         progress.setComplete(info);
-        progress.toggleCancel(false);
+        // progress.setStatus("上传完成");
+        // progress.toggleCancel(false);
     }, {
 
     });

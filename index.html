@@ -3,10 +3,23 @@
 <head>
 	<meta charset="UTF-8">
 	<title>七牛Plupload上传Demo </title>
+	<link href="/favicon.ico" rel="shortcut icon">	
 	<link rel="stylesheet" href="bootstrap/css/bootstrap.css">
 	<style>
 		body {
 			font-family: '微软雅黑';
+		}
+		.info {
+			position: relative;
+		}
+		.status {
+			position: absolute;
+			top:8px;
+			text-align: center;
+			width: 100%;
+		}
+		table > div {
+			display: none;
 		}
 	</style>
 </head>
@@ -14,18 +27,18 @@
 <div class="container">
 	<div class="text-center col-md-12 wrapper">
 		<h1 class="text-center col-md-12 ">Qiniu & Plupload  Demo with PHP SDK</h1>
-		
-		<form style="margin:120px 0 40px">
-			<div  class="text-center">
+		<form>
+			<div  class="text-center" style="position:relative">
+				<span>
 					<a class="btn btn-primary" id="pickfiles" href="#">
 						<strong>点击 选择文件</strong>
 						<p>根据浏览器的支持，plupload支持单个/多个文件<br>
 							以及文件夹的选择</p>
 					</a>
+				</span>
 			</div>
 		</form>	
-
-		<table class="table table-striped table-hover text-left"  id="container" style="display:none">
+		<table class="table table-striped table-hover text-left"  id="container" style="display:none;margin-top:40px;">
 			<thead>
 			  <tr>
 			    <th class="col-md-4">文件名</th>
@@ -43,6 +56,7 @@
 			        //     <span class="sr-only">20% Complete</span>
 			        //   </div>
 			        // </div>
+			        // <div class="status"></div>
 			    </td>
 			  </tr> -->
 			</tbody>
@@ -53,7 +67,7 @@
 <script type="text/javascript" src="js/plupload/plupload.full.min.js"></script>
 <script type="text/javascript" src="js/plupload/i18n/zh_CN.js"></script>
 <script type="text/javascript" src="/js/qiniu.js"></script>
-<script type="text/javascript" src="/js/fileprogress.js"></script>
+<script type="text/javascript" src="/js/ui.js"></script>
 
 </body>
 </html>
