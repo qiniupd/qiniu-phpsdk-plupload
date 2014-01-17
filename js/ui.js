@@ -37,7 +37,8 @@ function FileProgress(file, targetID) {
         progressSize.className = "progressFileSize";
         progressSize.appendChild(document.createTextNode(fileSize));
 
-        var progressBarBox = document.createElement('td');
+        var progressBarTd = document.createElement('td');
+        var progressBarBox = document.createElement('div');
         progressBarBox.className = "info";
         var progressBarWrapper = document.createElement("div");
         progressBarWrapper.className = "progress";
@@ -62,8 +63,9 @@ function FileProgress(file, targetID) {
         progressBarBox.appendChild(progressBarWrapper);
         progressBarBox.appendChild(progressCancel);
         var progressBarStatus = document.createElement('div');
-        progressBarStatus.className = "status";
+        progressBarStatus.className = "status text-center";
         progressBarBox.appendChild(progressBarStatus);
+        progressBarTd.appendChild(progressBarBox);
         // var progressUpSize = document.createElement("div");
         // progressUpSize.className = "progressUpSize";
         // progressUpSize.innerHTML = "&nbsp;";
@@ -72,7 +74,7 @@ function FileProgress(file, targetID) {
         this.fileProgressWrapper.appendChild(progressText);
         // this.fileProgressWrapper.appendChild(progressStatus);
         this.fileProgressWrapper.appendChild(progressSize);
-        this.fileProgressWrapper.appendChild(progressBarBox);
+        this.fileProgressWrapper.appendChild(progressBarTd);
 
         document.getElementById(targetID).appendChild(this.fileProgressWrapper);
     } else {
@@ -87,6 +89,7 @@ function FileProgress(file, targetID) {
 FileProgress.prototype.setTimer = function(timer) {
     this.fileProgressWrapper.FP_TIMER = timer;
 };
+
 FileProgress.prototype.getTimer = function(timer) {
     return this.fileProgressWrapper.FP_TIMER || null;
 };
@@ -115,65 +118,70 @@ FileProgress.prototype.setProgress = function(percentage, speed) {
     var size = Local.format(this.file.loaded, Local.storageHex, Local.storageUnits, 2);
     speed = Local.format(speed, Local.storageHex, Local.storageUnits, 2);
     // this.fileProgressWrapper.childNodes[2].className = "progressBarStatus";
-    this.fileProgressWrapper.childNodes[2].childNodes[2].innerHTML = "已上传: " + size.base + size.unit + " 上传速度： " + speed.base + speed.unit + "/s";
+    this.fileProgressWrapper.childNodes[2].childNodes[0].childNodes[2].innerHTML = "已上传: " + size.base + size.unit + " 上传速度： " + speed.base + speed.unit + "/s";
 
-    this.fileProgressWrapper.childNodes[2].childNodes[0].childNodes[0].childNodes[0].innerHTML = "&nbsp;";
-    this.fileProgressWrapper.childNodes[2].childNodes[0].childNodes[0].className = 'progress-bar progress-bar-info';
+    this.fileProgressWrapper.childNodes[2].childNodes[0].childNodes[0].childNodes[0].childNodes[0].innerHTML = "&nbsp;";
+    this.fileProgressWrapper.childNodes[2].childNodes[0].childNodes[0].childNodes[0].className = 'progress-bar progress-bar-info';
     this.fileProgressWrapper.childNodes[2].childNodes[0].childNodes[0].setAttribute('aria-valuenow', parseInt(percentage, 10));
     this.fileProgressWrapper.childNodes[2].childNodes[0].childNodes[0].style.width = percentage;
 
     this.appear();
 };
+
 FileProgress.prototype.setComplete = function(info) {
-    console.log(info);
-    this.fileProgressWrapper.childNodes[2].childNodes[0].style.display = 'none';
+    //console.log(info);
     this.fileProgressWrapper.childNodes[2].childNodes[0].childNodes[0].setAttribute('aria-valuenow', parseInt(100, 10));
     this.fileProgressWrapper.childNodes[2].childNodes[0].childNodes[0].style.width = "100%";
-    var res = $.parseJSON(info.response);
-    var url = 'http://qiniu-plupload.qiniudn.com/' + res.key;
-    var str = "<div><strong>Link:</strong><a href=" + url + " target='_blank' > " + url + "</a></div>" +
+    this.fileProgressWrapper.childNodes[2].childNodes[0].style.display = 'none';
+    // var res = $.parseJSON(info.response);
+    var res = info;
+    var url = 'http://qiniu-plupload.qiniudn.com/' + encodeURI(res.key);
+    var link = 'http://qiniu-plupload.qiniudn.com/' + res.key;
+    var str = "<div><strong>Link:</strong><a href=" + url + " target='_blank' > " + link + "</a></div>" +
         "<div><strong>Hash:</strong>" + res.hash + "<div>";
 
     this.fileProgressWrapper.childNodes[2].innerHTML = str;
 };
 FileProgress.prototype.setError = function() {
     // this.fileProgressWrapper.className = "progressContainer red";
-    this.fileProgressWrapper.childNodes[2].className =  this.fileProgressWrapper.childNodes[2].className + '  text-warning';
-        this.fileProgressWrapper.childNodes[2].childNodes[0].style.display='none';
-        this.fileProgressWrapper.childNodes[2].childNodes[0].childNodes[0].style.width = "0%";
+    this.fileProgressWrapper.childNodes[2].className = 'text-warning';
+    this.fileProgressWrapper.childNodes[2].childNodes[0].childNodes[0].style.display = 'none';
+    this.fileProgressWrapper.childNodes[2].childNodes[0].childNodes[0].style.width = "0%";
 };
+
 FileProgress.prototype.setCancelled = function(manual) {
     // var progressContainer = 'progressContainer';
     // if (!manual) {
     //     progressContainer += ' red';
     // }
-    // this.fileProgressWrapper.className = progressContainer; 
+    // this.fileProgressWrapper.className = progressContainer;
     // this.fileProgressWrapper.childNodes[2].childNodes[0].childNodes[0].style.width = "0%";
 };
+
 FileProgress.prototype.setStatus = function(status, isUploading) {
     if (!isUploading) {
-
-        this.fileProgressWrapper.childNodes[2].childNodes[2].innerHTML =status;
+        this.fileProgressWrapper.childNodes[2].childNodes[0].childNodes[2].innerHTML = status;
+        this.fileProgressWrapper.childNodes[2].childNodes[0].childNodes[2].className = 'status text-left';
     }
 };
 
 // Show/Hide the cancel button
 FileProgress.prototype.toggleCancel = function(show, up) {
-    var self = this;
-    if (up) {
-        self.fileProgressWrapper.childNodes[0].onclick = function() {
-            //绑定事件 取消当前上传文件
-            self.setCancelled();
-            self.setStatus("取消上传");
-            var status_before = self.file.status;
-            up.removeFile(self.file);
-            if (up.state === plupload.STARTED && status_before === plupload.UPLOADING) {
-                up.stop();
-                up.start();
-            }
-            return true;
-        };
-    }
+    // var self = this;
+    // if (up) {
+    //     self.fileProgressWrapper.childNodes[0].onclick = function() {
+    //         //绑定事件 取消当前上传文件
+    //         self.setCancelled();
+    //         self.setStatus("取消上传");
+    //         var status_before = self.file.status;
+    //         up.removeFile(self.file);
+    //         if (up.state === plupload.STARTED && status_before === plupload.UPLOADING) {
+    //             up.stop();
+    //             up.start();
+    //         }
+    //         return true;
+    //     };
+    // }
 
 };
 
